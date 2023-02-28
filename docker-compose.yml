@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+    mongo:
+      image: mongo:latest
+      restart: always
+      hostname: wad_mongodb
+      environment:
+        - MONGO_INITDB_DATABASE=wad_db
+        - MONGO_INITDB_ROOT_USERNAME=root
+        - MONGO_INITDB_ROOT_PASSWORD=pass
+      volumes:
+        - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
+
+    app:
+      build: ./app
+      ports:
+        - "5000:5000"
+      depends_on:
+            - mongo
